@@ -1,0 +1,62 @@
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Web3 from 'web3'
+import './../css/index.css'
+
+class App extends React.Component {
+   constructor(props){
+      super(props)
+      /*
+      this.state = {
+         lastWinner: 0,
+         timer: 0
+      }
+      */
+      
+         if(typeof web3 != 'undefined'){
+      console.log("Using web3 detected from external source like Metamask")
+      this.web3 = new Web3(web3.currentProvider)
+   }else{
+      this.web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:3000"))
+   }
+
+   const MyContract = web3.eth.contract([[{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"registrantsPaid","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"organizer","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"recipient","type":"address"},{"name":"amount","type":"uint256"}],"name":"refundTicket","outputs":[],"payable":true,"stateMutability":"payable","type":"function"},{"constant":false,"inputs":[],"name":"destroy","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"newquota","type":"uint256"}],"name":"changeQuota","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"quota","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"numRegistrants","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"buyTicket","outputs":[],"payable":true,"stateMutability":"payable","type":"function"},{"inputs":[],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"name":"_from","type":"address"},{"indexed":false,"name":"_amount","type":"uint256"}],"name":"Deposit","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"_to","type":"address"},{"indexed":false,"name":"_amount","type":"uint256"}],"name":"Refund","type":"event"}]])
+
+   this.state.ContractInstance = MyContract.at("0xffcf8fdee72ac11b5c542428b35eef5769c409f0")
+}
+   
+
+/*
+voteNumber(number){
+      console.log(number)
+   }
+*/
+
+render(){
+      return (
+         <div className="main-container">
+            <h1>Bet for your best number and win huge amounts of Ether</h1>
+
+<div className="block">
+               <h4>Timer:</h4> &nbsp;
+               <span ref="timer"> {this.state.timer}</span>
+            </div>
+
+<div className="block">
+               <h4>Last winner:</h4> &nbsp;
+               <span ref="last-winner">{this.state.lastWinner}</span>
+            </div>
+
+<hr/>
+
+<h2>Vote for the next number</h2>
+
+         </div>
+      )
+   }
+}
+
+ReactDOM.render(
+   <App />,
+   document.querySelector('#root')
+)
